@@ -540,6 +540,10 @@ void GenerateScriptOutput(int simulation_index, Performance *performance_report,
 					strcat(rtscts_loss_ratio_per_device, aux_rtscts_loss_ratio_per_device);
 					// Increase the number of visited nodes
 					++counter_nodes_visited;
+
+					fprintf(logger_script.file, ";%s;%d;%.2f;%.2f;%.2f\n",configuration_per_node[i].capabilities.node_code.c_str(),1,
+					configuration_per_node[i].capabilities.x,configuration_per_node[i].capabilities.y,configuration_per_node[i].capabilities.z);
+
 					for(int w = 0; w < total_wlans_number; w ++) {
 						if(wlan_container[w].ap_id == configuration_per_node[i].capabilities.node_id) {
 							for(int s = 0; s < wlan_container[w].num_stas; s ++) {
@@ -581,7 +585,9 @@ void GenerateScriptOutput(int simulation_index, Performance *performance_report,
 									strcat(data_loss_ratio_per_device, ",");
 									strcat(rtscts_loss_ratio_per_device, ",");}
 								// Printing STA details row-wise
-//								fprintf(logger_script.file, ";%s\n", sta_details);
+								fprintf(logger_script.file, ";%s;%d;%.2f;%.2f;%.2f;%s\n",
+								configuration_per_node[i+s+1].capabilities.node_code.c_str(),0,configuration_per_node[i+s+1].capabilities.x,configuration_per_node[i+s+1].capabilities.y,configuration_per_node[i+s+1].capabilities.z,
+								sta_details);
 							}
 						}
 					}
@@ -599,8 +605,8 @@ void GenerateScriptOutput(int simulation_index, Performance *performance_report,
 			strcat(time_in_nav_per_device, "}");
 
 			// STEP 2: Print the data to the output .csv file
-			fprintf(logger_script.file, ";%s;%s;%s;%s;%s;%s\n", label_per_device, tpt_per_device,rssi_per_device,
-				data_loss_ratio_per_device,rtscts_loss_ratio_per_device,time_in_nav_per_device);
+			/* fprintf(logger_script.file, ";%s;%s;%s;%s;%s;%s\n", label_per_device, tpt_per_device,rssi_per_device,
+				data_loss_ratio_per_device,rtscts_loss_ratio_per_device,time_in_nav_per_device); */
 
 			break;
 		}
